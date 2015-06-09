@@ -145,6 +145,24 @@ class Camera:
         self.b = np.dot(rot, self.b)
         self.c = np.dot(rot, self.c)        
         
+    def orbit_z(self, angle):
+        '''Same as :py:meth:`~chemlab.graphics.camera.Camera.orbit_y`
+        but the axis of rotation is the :py:attr:`Camera.c` vector.
+                        
+        '''
+
+        # Subtract pivot point
+        self.position -= self.pivot
+        # Rotate
+        rot = rotation_matrix(-angle, self.c)[:3,:3]
+        self.position = np.dot(rot, self.position)
+        # Add again the pivot point
+        self.position += self.pivot
+    
+        self.a = np.dot(rot, self.a)
+        self.b = np.dot(rot, self.b)
+        self.c = np.dot(rot, self.c)
+
     def mouse_rotate(self, dx, dy):
         '''Convenience function to implement the mouse rotation by
         giving two displacements in the x and y directions.
